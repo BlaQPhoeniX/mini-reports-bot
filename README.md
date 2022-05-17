@@ -12,7 +12,7 @@ This bot will listen to battle reports from a specified channel and then automat
 
 * Telegram API ID and HASH.
 * Telegram account with access to the source report channel.
-* Bot token (from [@BotFather](https://t.me/botfather) for bot that has posting permissions in target channel.
+* Bot token (from [@BotFather](https://t.me/botfather)) for bot that has posting permissions in target channel.
 
 ### Installing
 
@@ -22,11 +22,11 @@ $ pipenv sync
 
 ### Configuration
 
-* Copy the example `config.py`
+1. Copy the example `config.py`
 ```
 cp config.py.example config.py
 ```
-* Add relevant configurations
+2. Add relevant configurations
 ```python
 API_ID = 69999
 API_HASH = "123456789abcdefghijklmnopqrstuvw"
@@ -36,7 +36,7 @@ BOT_TOKEN = "696942069:AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
 SOURCE_REPORTS = "ChatWarsReports"
 TARGET_REPORTS = "cweminireports"
 ```
-* Save 
+3. Save 
 
 ### Executing program
 

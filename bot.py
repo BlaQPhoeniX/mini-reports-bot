@@ -30,9 +30,9 @@ from helpers import parse_report, build_mini_report
 import config
 
 logging.basicConfig(format='[%(asctime)s - %(levelname)s] - %(name)s - %(message)s',
-                     level=logging.INFO)
+                    level=logging.INFO)
 
-logger = logging.getLogger()
+logger = logging.getLogger(__name__)
 
 userbot = Client("userbot", api_hash=config.API_HASH, api_id=config.API_ID)
 apibot = Client("apibot", bot_token=config.BOT_TOKEN, api_id=config.API_ID, api_hash=config.API_HASH)
@@ -47,7 +47,8 @@ async def reports_listener(client, message):
     report_json = json.dumps(report["reports"], indent=2)
     print(report_json)
     mini_report = build_mini_report(report)
-    await apibot.send_message(config.TARGET_REPORTS, mini_report, parse_mode=enums.ParseMode.HTML)
+    await apibot.send_message(config.TARGET_REPORTS, mini_report, parse_mode=enums.ParseMode.HTML,
+                              disable_web_page_preview=True)
 
 
 apibot.start()

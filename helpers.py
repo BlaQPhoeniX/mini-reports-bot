@@ -24,6 +24,9 @@
 
 import re
 import pytz
+import logging
+
+logger = logging.getLogger(__name__)
 
 report_re = re.compile(r"""^(?P<icon>🔱?🛡|⚔) (?:Battle )?[Aa]t (?P<castle>.*?) (?:the )?(?:defenders|warriors|was).*(?P<battle>easily fought off|slight edge|break into|slightly stronger|wiped out|stood victorious).*$
 ^.*$
@@ -50,8 +53,7 @@ def parse_report(report):
     report_date = report_text.splitlines()[0]
     report_json["date"] = report_date
     report_json["original_date"] = report.date
-    # TODO: fix link generation, not working for some reason?
-    report_json["link"] = f"http://t.me/{report.sender_chat}/{report.id}"
+    report_json["link"] = f"https://t.me/{report.sender_chat.username}/{report.id}"
 
     for line in report_text.splitlines():
         if line.startswith("Scores"):
@@ -102,7 +104,7 @@ def build_mini_report(report_json):
     mini_report += f'\n\n<a href="{report_json["link"]}">Battle</a> {report_json["date"]}\n'
     # TODO: automatically detect system timezone instead of hardcoded
     SAST = pytz.timezone("Africa/Harare")
-    report_date = report_json["original_date"].replace(minute=0, tzinfo=SAST).astimezone(tz=pytz.UTC)
+    report_date = SAST.localize(report_json["original_date"].replace(minute=0)).astimezone(tz=pytz.UTC)
     mini_report += f'{report_date:%d/%m/%y %H:%M %Z}'
 
     return mini_report
