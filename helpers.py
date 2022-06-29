@@ -28,7 +28,7 @@ import logging
 
 logger = logging.getLogger(__name__)
 
-report_re = re.compile(r"""^(?P<icon>🔱?🛡|⚔) (?:Battle )?[Aa]t (?P<castle>.*?) (?:the )?(?:defenders|warriors|was).*(?P<battle>easily fought off|slight edge|break into|slightly stronger|wiped out|stood victorious).*$
+report_re = re.compile(r"""^(?P<icon>🔱?🛡|⚔️) (?:Battle )?[Aa]t (?P<castle>.*?) (?:the )?(?:defenders|warriors|was).*(?P<battle>easily fought off|slight edge|break into|slightly stronger|wiped out|stood victorious).*$
 ^.*$
 ^.*$
 🏆Attackers have (?P<status>pillaged|lost).*?(?P<gold>\d+) gold(?: and (?P<stock>\d+) stock)?\.$""", re.M | re.U)
@@ -36,13 +36,13 @@ report_re = re.compile(r"""^(?P<icon>🔱?🛡|⚔) (?:Battle )?[Aa]t (?P<castle
 bored_re = re.compile(r"""^(?P<icon>🛡) Defenders of (?P<castle>.*?) were (?P<battle>bored) - no one has attacked them.""", re.M | re.U)
 
 warmoji_map = {
-    "easily fought off": "👌",
-    "slight edge": "⚡️",
-    "break into": " ",
     "bored": "😴",
-    "slightly stronger": "⚡️",
-    "wiped out": "😎",
-    "stood victorious": " "
+    "easily fought off": "👌",
+    "stood victorious": " ",
+    "slight edge": "⚡️",
+    "slightly stronger": "\N{VARIATION SELECTOR-16}⚡️",
+    "break into": "\N{VARIATION SELECTOR-16} ",
+    "wiped out": "\N{VARIATION SELECTOR-16}😎"
 }
 
 
@@ -103,8 +103,8 @@ def build_mini_report(report_json):
     mini_report += "</i>"
     mini_report += f'\n\n<a href="{report_json["link"]}">Battle</a> {report_json["date"]}\n'
     # TODO: automatically detect system timezone instead of hardcoded
-    SAST = pytz.timezone("Africa/Harare")
-    report_date = SAST.localize(report_json["original_date"].replace(minute=0)).astimezone(tz=pytz.UTC)
+    sast = pytz.timezone("Africa/Harare")
+    report_date = sast.localize(report_json["original_date"].replace(minute=0)).astimezone(tz=pytz.UTC)
     mini_report += f'{report_date:%d/%m/%y %H:%M %Z}'
 
     return mini_report
